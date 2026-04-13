@@ -75,7 +75,7 @@ const startServer = async () => {
       res.json({ status: "ok", message: "Server is running" });
     });
 
-    app.post("/run", async (req, res) => {
+    app.post("/api/run", async (req, res) => {
       const { code } = req.body;
       if (!code || typeof code !== "string") {
         return res.status(400).json({ error: "Code is required" });

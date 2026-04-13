@@ -44,24 +44,31 @@ const startServer = async () => {
     }
 
     // Enable CORS for frontend
-    // In production, this allows requests from the deployed Vercel frontend
     const allowedOrigins = [
       process.env.FRONTEND_URL,
+      "https://std-out.vercel.app",
     ].filter(Boolean);
 
-    app.use(
-      cors({
-        origin: (origin, callback) => {
-          if (!origin) return callback(null, true); // allow non-browser requests
-          if (process.env.NODE_ENV !== "production") return callback(null, true);
-          if (allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
-            return callback(null, true);
-          }
-          callback(new Error("Not allowed by CORS"));
-        },
-        credentials: true,
-      }),
-    );
+    const corsOptions = {
+      origin: (origin, callback) => {
+        // Allow non-browser requests (curl, server-to-server)
+        if (!origin) return callback(null, true);
+        // Allow everything in development
+        if (process.env.NODE_ENV !== "production") return callback(null, true);
+        // Allow explicitly listed origins and any *.vercel.app preview URL
+        if (allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
+          return callback(null, true);
+        }
+        // Return false (not an error) so cors sends a plain 200 with no
+        // Allow-Origin header rather than triggering Express's error handler
+        return callback(null, false);
+      },
+      credentials: true,
+    };
+
+    // Handle preflight OPTIONS requests explicitly before any other middleware
+    app.options("*", cors(corsOptions));
+    app.use(cors(corsOptions));
 
     app.use(express.json()); // parses JSON request bodies
 

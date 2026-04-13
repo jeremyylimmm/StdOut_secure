@@ -71,7 +71,7 @@ _BLOCKED_MODULES = {
     # Windows-specific
     'winreg', 'winsound', 'msvcrt',
     # Misc
-    'atexit', 'faulthandler', 'tracemalloc',
+    'faulthandler', 'tracemalloc',
 }
 
 for _mod in _BLOCKED_MODULES:

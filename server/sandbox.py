@@ -57,7 +57,7 @@ _BLOCKED_MODULES = {
     'ftplib', 'smtplib', 'imaplib', 'poplib',
     'xmlrpc', 'socketserver', 'asyncio',
     # Concurrency
-    'threading', 'multiprocessing', 'concurrent',
+    'multiprocessing', 'concurrent',
     'concurrent.futures', '_thread', 'queue',
     # Introspection / code execution (sandbox escape tools)
     'ast', 'dis', 'inspect', 'code', 'codeop',
